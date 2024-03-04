@@ -1,21 +1,40 @@
 package com.servicio.demo.Servicio;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.servicio.demo.Modelo.Personas;
 
 @Service
 public class HolaMundoServicio {
-    public String holaMundo(int id) {
-        switch (id) {
-            case 55220014:
-                return "Hola Juan Pablo Gutierrez cod:"+ id;
-            case 55220010:
-                return "Hola Frans Sebastian Villamizar cod:"+ id;
-            case 55220011:
-                return "Hola Camilo Andres Leon cod:" + id;
-            case 55219009:
-                return "Hola Cristian Javier Rodriguez cod:"+id;
-            default:
-                return "Hola Mundo!";
+    private List<Personas> personas;
+
+    public HolaMundoServicio() {
+        cargarDatos();
+    }
+
+    private void cargarDatos() {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ClassPathResource resource = new ClassPathResource("personas.json");
+            Personas[] personasArray = objectMapper.readValue(resource.getInputStream(), Personas[].class);
+            personas = Arrays.asList(personasArray);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public String buscarNombrePorCodigo(int codigo) {
+        for (Personas persona : personas) {
+            if (persona.getCodigo() == codigo) {
+                return persona.getNombre();
+            }
+        }
+        return "Persona no encontrada";
     }
 }
