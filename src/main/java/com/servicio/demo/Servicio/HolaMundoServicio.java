@@ -1,6 +1,7 @@
 package com.servicio.demo.Servicio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import com.servicio.demo.Modelo.Personas;
 
 @Service
 public class HolaMundoServicio {
-    private List<Personas> personas;
+    private List<Personas> personas = new ArrayList<>();
 
     public HolaMundoServicio() {
         cargarDatos();
